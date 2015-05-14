@@ -13,7 +13,12 @@ def out = args[args.length - 1]
 def src = Arrays.asList(args).subList(0, args.length - 1)
 
 def of = new File(out)
-of.delete()
+if (of.exists()) {
+    of.delete()
+}
+if (!of.getParentFile().exists()) {
+    of.getParentFile().mkdirs()
+}
 def zos = new ZipOutputStream(new FileOutputStream(of, false))
 def putted = new HashSet<String>()
 
