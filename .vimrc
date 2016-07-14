@@ -36,6 +36,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 Plugin 'benmills/vimux'
+Plugin 'tfnico/vim-gradle'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
