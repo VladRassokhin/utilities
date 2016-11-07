@@ -1,0 +1,34 @@
+[user]
+	name = Vladislav Rassokhin
+	email = vladislav.rassokhin@jetbrains.com
+[gc]
+	auto = 0
+
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[push]
+	default = simple
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+
+[alias]
+	assume = update-index --assume-unchanged
+	unassume = update-index --no-assume-unchanged
+	assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+	pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
+        unassumeall = "!git assumed | xargs git update-index --no-assume-unchanged"
+	assumeall = "!git status -s | cut -c4- | xargs git assume"
+	dog = "!git log --decorate --graph --oneline --all"
+	st = "!git status"
+[pull]
+	rebase = true
+[include]
+	path = ~/.gitconfig-local
