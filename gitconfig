@@ -30,5 +30,7 @@
 	st = "!git status"
 [pull]
 	rebase = true
+[diff]
+        compactionHeuristic=true
 [include]
 	path = ~/.gitconfig-local
