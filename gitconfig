@@ -28,7 +28,7 @@
 	assumeall = "!git status -s | cut -c4- | xargs git assume"
 	dog = "!git log --decorate --graph --oneline --all"
 	st = "!git status"
-	fap = "!git fetch --all --prune"
+	fapt = "!git fetch --all --prune --tags"
 [pull]
 	rebase = true
 [diff]
