@@ -28,12 +28,12 @@ IFS=$oldIFS
 echo "Unused snapshots: ${unused[*]}"
 
 dry="--dry-run"
-if [[ "$1" == "remove" ]]; then
+if [[ "$1" == "mark" ]]; then
 	dry="--no-dry-run"
 fi
 
 trap 'exit 2' SIGINT SIGTERM
 for sn in "${unused[@]}"; do
-	echo "Removing $sn"
-	aws ec2 delete-snapshot --region $region $dry --snapshot-id $sn
+	echo "Marking $sn to remove"
+	aws ec2 create-tags --region $region $dry --tags Key=ToRemove,Value=True --resources $sn
 done
