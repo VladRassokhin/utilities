@@ -1,7 +1,7 @@
 #!/bin/bash
 export VAULT_ADDR='http://127.0.0.1:8200'
 
-if [[ -z "$AWS_ACCESS_KEY" -o -z "$AWS_SECRET_KEY" ]]; then
+if [ -z "$AWS_ACCESS_KEY" -o -z "$AWS_SECRET_KEY" ]; then
 echo "AWS credentials should be set in AWS_ACCESS_KEY and AWS_SECRET_KEY env variables"
 exit 1
 fi
