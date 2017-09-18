@@ -22,7 +22,7 @@ path "aws/creds/*" {
   capabilities = ["read", "list"]
 }
 EOF
-vault write sys/policy/read-secrets rules=@vault-simple-policy.hcl
+vault write sys/policy/read-aws rules=@vault-simple-policy.hcl
 rm vault-simple-policy.hcl
 
 echo "Adding AppRole"
