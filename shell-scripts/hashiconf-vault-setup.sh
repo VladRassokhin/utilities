@@ -11,10 +11,6 @@ tee vault-simple-policy.hcl <<EOF
 path "secret/*" {
   capabilities = ["read", "list"]
 }
-EOF
-vault write sys/policy/read-secrets rules=@vault-simple-policy.hcl
-rm vault-simple-policy.hcl
-tee vault-simple-policy.hcl <<EOF
 path "aws/roles/*" {
   capabilities = ["read", "list"]
 }
@@ -27,8 +23,8 @@ rm vault-simple-policy.hcl
 
 echo "Adding AppRole"
 vault auth-enable approle
-vault write auth/approle/role/testrole secret_id_ttl=24h token_num_uses=10 token_ttl=10s token_max_ttl=5m \
-	secret_id_num_uses=40 policies=read-secrets,read-aws
+vault write auth/approle/role/testrole secret_id_ttl=24h token_num_uses=50 token_ttl=5m token_max_ttl=1h \
+	secret_id_num_uses=40 policies=read-aws
 vault write auth/approle/role/test-role/role-id role_id=test-role-id
 vault read auth/approle/role/testrole/role-id
 
@@ -66,6 +62,25 @@ vault write aws/roles/iam policy=@vault-aws-policy.json
 rm vault-aws-policy.json
 vault write aws/roles/readonly arn=arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 vault write aws/roles/ec2-full arn=arn:aws:iam::aws:policy/AmazonEC2FullAccess
+tee vault-aws-policy.json <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ec2:*",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:*",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+vault write aws/roles/ec2-s3 policy=@vault-aws-policy.json
+rm vault-aws-policy.json
 
 # Usage:
 #vault read aws/creds/iam
