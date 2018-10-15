@@ -1,0 +1,53 @@
+#should be included into .profile or .bash_profile
+
+# bash configs
+export HISTIGNORE="&:[bf]g:exit:[ ]*:umount"
+export HISTCONTROL="ignorespace:ignoredupes:erasedups"
+export HISTSIZE="2000"
+shopt -s histappend
+#PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+
+
+# TeamCity
+export TEAMCITY_AGENT_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -Dteamcity.export.ec2.metadata=false"
+export TEAMCITY_SERVER_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5500"
+export TEAMCITY_DATA_PATH="../data"
+
+
+#
+pathadd() {
+  if [ -d "$1" ]; then
+    if [[ ":$PATH:" != *":$1:"* ]]; then
+      PATH="$1:$PATH"
+    else
+      PATH="$(echo "$1:$PATH" | awk -v RS=':' -v ORS=':' '!a[$1]++')"
+    fi
+  fi
+}
+pathadd_suffix() {
+  if [ -d "$1" ]; then
+    if [[ ":$PATH:" != *":$1:"* ]]; then
+      PATH="$PATH:$1"
+    #else
+      #PATH="$(echo "$1:$PATH" | awk -v RS=':' -v ORS=':' '!a[$1]++')"
+    fi
+  fi
+}
+
+#pathadd "/usr/local/bin"
+#pathadd "/usr/local/sbin"
+pathadd "$HOME/bin"
+#pathadd "$HOME/devel/qbs/bin"
+#pathadd "$HOME/packer"
+
+# Dumb aliases
+alias cd..="cd .."
+alias got=git
+alias gut=git
+
+alias tmux='tmux attach || tmux new'
+
+[[ -n "$GOPATH" ]] && pathadd "$GOPATH/bin"
+
+export P4CONFIG=.p4config
+
