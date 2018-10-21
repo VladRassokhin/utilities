@@ -18,14 +18,17 @@ path "aws/creds/*" {
   capabilities = ["read", "list"]
 }
 EOF
-vault write sys/policy/read-aws rules=@vault-simple-policy.hcl
+vault write sys/policy/read-aws policy=@vault-simple-policy.hcl
 rm vault-simple-policy.hcl
 
+echo
 echo "Adding AppRole"
-vault auth-enable approle
+vault auth enable approle
 vault write auth/approle/role/testrole secret_id_ttl=24h token_num_uses=50 token_ttl=5m token_max_ttl=1h \
 	secret_id_num_uses=40 policies=read-aws
-vault write auth/approle/role/test-role/role-id role_id=test-role-id
+
+echo
+echo "AppRole ID:"
 vault read auth/approle/role/testrole/role-id
 
 echo
@@ -33,13 +36,15 @@ echo "AppRole SecretID:"
 vault write -f auth/approle/role/testrole/secret-id
 
 
+echo
 echo "Adding secrets"
 # Add testing secrets
-vault write /secret/test data=TestSecret
-vault write /secret/test-complex first=SecretPartA second=SecretPartB
+vault kv put /secret/test data=TestSecret
+vault kv put /secret/test-complex first=SecretPartA second=SecretPartB
 
+echo
 echo "Adding AWS"
-vault mount aws
+vault secrets enable aws
 vault write aws/config/root \
     "access_key=$AWS_ACCESS_KEY" \
     "secret_key=$AWS_SECRET_KEY" \
@@ -58,10 +63,10 @@ tee vault-aws-policy.json <<EOF
 }
 EOF
 
-vault write aws/roles/iam policy=@vault-aws-policy.json
+vault write aws/roles/iam credential_type=iam_user policy_document=@vault-aws-policy.json
 rm vault-aws-policy.json
-vault write aws/roles/readonly arn=arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
-vault write aws/roles/ec2-full arn=arn:aws:iam::aws:policy/AmazonEC2FullAccess
+vault write aws/roles/readonly credential_type=iam_user policy_arns=arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+vault write aws/roles/ec2-full credential_type=iam_user policy_arns=arn:aws:iam::aws:policy/AmazonEC2FullAccess
 tee vault-aws-policy.json <<EOF
 {
   "Version": "2012-10-17",
@@ -79,11 +84,14 @@ tee vault-aws-policy.json <<EOF
   ]
 }
 EOF
-vault write aws/roles/ec2-s3 policy=@vault-aws-policy.json
+vault write aws/roles/ec2-s3 credential_type=iam_user policy_document=@vault-aws-policy.json
 rm vault-aws-policy.json
 
-# Usage:
-#vault read aws/creds/iam
-#vault read aws/creds/readonly
-#vault read aws/creds/ec2-full
+echo <<EOF
+ Usage:
+vault read aws/creds/iam
+vault read aws/creds/readonly
+vault read aws/creds/ec2-full
+vault read aws/creds/ec2-s3
+EOF
 
