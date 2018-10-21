@@ -50,6 +50,8 @@ vault write aws/config/root \
     "secret_key=$AWS_SECRET_KEY" \
     region=us-east-1
 
+vault write aws/config/lease lease=5m lease_max=1h
+
 tee vault-aws-policy.json <<EOF
 {
   "Version": "2012-10-17",
