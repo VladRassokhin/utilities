@@ -87,7 +87,7 @@ EOF
 vault write aws/roles/ec2-s3 credential_type=iam_user policy_document=@vault-aws-policy.json
 rm vault-aws-policy.json
 
-echo <<EOF
+cat <<EOF
  Usage:
 vault read aws/creds/iam
 vault read aws/creds/readonly
