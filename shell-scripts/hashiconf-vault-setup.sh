@@ -89,6 +89,28 @@ EOF
 vault write aws/roles/ec2-s3 credential_type=iam_user policy_document=@vault-aws-policy.json
 rm vault-aws-policy.json
 
+tee vault-aws-policy.json <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::mybucket"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::mybucket/path/to/my/key"
+    }
+  ]
+}
+EOF
+vault write aws/roles/ec2-s3 credential_type=iam_user policy_document=@vault-aws-policy.json
+rm vault-aws-policy.json
+
+
+
 cat <<EOF
  Usage:
 vault read aws/creds/iam
