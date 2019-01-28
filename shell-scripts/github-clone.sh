@@ -14,5 +14,6 @@ fi
 
 dest=${2:-${src#*/}}
 
-echo git clone "https://github.com/$src" "$dest"
-echo git -C "$dest" remote set-url origin --push "git@github.com:$src.git"
+git clone "https://github.com/$src" "$dest"
+git -C "$dest" remote set-url origin --push "git@github.com:$src.git"
+cd "$dest"
