@@ -37,3 +37,5 @@
 	path = ~/.gitconfig-local
 [protocol]
 	version = 2
+[rebase]
+	autoStash = true
