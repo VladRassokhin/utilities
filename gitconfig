@@ -29,6 +29,7 @@
 	dog = "!git log --decorate --graph --oneline --all"
 	st = "!git status"
 	fapt = "!git fetch --all --prune --tags"
+	cpx = "!git cherry-pick -x"
 [pull]
 	rebase = true
 [diff]
