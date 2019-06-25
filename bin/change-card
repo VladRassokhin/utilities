@@ -1,0 +1,11 @@
+#!/bin/bash
+mkdir "$HOME/logs"
+{
+    pkill -9 gpg-agent
+    for keystub in $(gpg --with-keygrip --list-secret-keys 0x4328ECE752D614CC | grep Keygrip | awk '{print $3}'); do rm "$HOME/.gnupg/private-keys-v1.d/$keystub.key"; done;
+    gpg --card-status
+    eval $(gpgconf --launch gpg-agent)
+    ssh-add -l
+} &> "$HOME/logs/gpg-card-change-log.txt"
+
+exit 0

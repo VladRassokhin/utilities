@@ -1,0 +1,11 @@
+#!/bin/sh
+file="$1"
+if [[ -z "$file" ]]; then
+	echo "Expected one argument: file name"
+	exit 1
+fi
+if [[ ! -f "$file" ]];then
+	echo "Cannot encrypt non-existing file: $file"
+	exit 1
+fi
+gpg --output "${file}.gpg" --encrypt --recipient Vladislav.Rassokhin@jetbrains.com "$file"

@@ -1,0 +1,12 @@
+#!/bin/sh
+file="$1"
+if [[ -z "$file" ]]; then
+	echo "Expected one argument: file name wihout .gpg suffix"
+	exit 1
+fi
+if [[ ! -f "$file.gpg" ]];then
+	echo "cannot decrypt non-existing file $file.gpg"
+	exit 1
+fi
+
+gpg --decrypt --output "$file" "${file}.gpg"
