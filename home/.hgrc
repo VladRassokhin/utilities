@@ -1,0 +1,8 @@
+[ui]
+username = Vladislav Rassokhin <vladrassokhin@gmail.com>
+
+[extensions]
+hgext.convert=
+hgext.strip=
+
+
