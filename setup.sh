@@ -8,6 +8,7 @@ for f in $(ls -A home); do
 	ln -s "$dir/home/$f" "$HOME/$f"
 done
 
+mkdir "$HOME/bin"
 for f in $(ls -A bin); do
 	unlink "$HOME/bin/$f"
 	ln -s "$dir/bin/$f" "$HOME/bin/$f"
