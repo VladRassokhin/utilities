@@ -50,6 +50,7 @@ alias cd..="cd .."
 alias got=git
 alias gut=git
 alias tmux='tmux attach || tmux new'
+alias sudos='sudo -i bash -l'
 
 export P4CONFIG=.p4config
 

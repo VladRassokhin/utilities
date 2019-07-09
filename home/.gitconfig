@@ -40,3 +40,5 @@
 	version = 2
 [rebase]
 	autoStash = true
+[merge]
+	renamelimit = 400000
